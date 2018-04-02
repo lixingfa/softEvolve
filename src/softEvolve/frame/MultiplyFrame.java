@@ -17,7 +17,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+
+import common.constant.SysConstant;
 
 import softEvolve.util.FileUtil;
 import softEvolve.util.SWingUtil;
@@ -43,10 +46,19 @@ public class MultiplyFrame extends JPanel{
 	
 	private void multiply() throws Exception{
 		//1、<基因的名称，基因的内容>
-		Map<String, String> fatherGens = FileUtil.getDirectoryContent(fatherPath.getText());
-		Map<String, String> motherGens = FileUtil.getDirectoryContent(motherPath.getText());
+		String father = fatherPath.getText();
+		String mother = motherPath.getText();
+		if (StringUtils.isBlank(father) && StringUtils.isBlank(mother)) {
+			append("请至少选择一份基因。");			
+			return;
+		}
+		Map<String, String> fatherGens = FileUtil.getDirectoryContent(father);
+		Map<String, String> motherGens = FileUtil.getDirectoryContent(mother);
+		if (!fatherGens.isEmpty() && fatherGens.containsKey(SysConstant.ID)) {
+			
+		}
 		//2、繁衍，双倍体一次可以得到四个后代
-		
+		System.out.println();
 	}
 	
 	
@@ -75,7 +87,7 @@ public class MultiplyFrame extends JPanel{
 		centerPanel.add(goalPw);
 		centerPanel.add(requirement);
 		centerPanel.add(multiply);
-		multiply.setEnabled(false);
+//		multiply.setEnabled(false);
 		add(BorderLayout.CENTER,centerPanel);
 		//底部
 		JPanel southPane = new JPanel();

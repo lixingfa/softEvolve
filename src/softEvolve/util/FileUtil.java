@@ -235,7 +235,10 @@ public class FileUtil {
      * @param fileName
      * @return 文件内容
      */
-    public static String getFileString(String fileName) {
+    public static String getFileString(String fileName) throws Exception{
+    	if (new File(fileName).isDirectory()) {
+			throw new Exception("读取文件内容出错，" + fileName + "是一个文件夹！");
+		}
         StringBuffer sBuffer = new StringBuffer();
         BufferedReader reader = null;
         int line = 1;
@@ -251,12 +254,13 @@ public class FileUtil {
             reader.close();
         } catch (IOException e) {
             System.out.println("读取第" + line + "发生错误");
-            e.printStackTrace();
+            throw e;
         } finally {
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e1) {
+                	throw e1;
                 }
             }
         }
@@ -270,14 +274,13 @@ public class FileUtil {
      * @param dirPath
      * @return Map<String, String>
      */
-    public static Map<String, String> getDirectoryContent(String dirPath){
+    public static Map<String, String> getDirectoryContent(String dirPath) throws Exception{
     	Map<String, String> map = new HashMap<String, String>();
     	File file = new File(dirPath);
     	if (file.isDirectory()) {//是目录
 			File[] subFiles = file.listFiles();
 			for (int i = 0; i < subFiles.length; i++) {
-				String path = subFiles[0].getAbsolutePath();
-				map.put(path, getFileString(path));
+				map.putAll(getDirectoryContent(subFiles[0].getAbsolutePath()));
 			}
 		}else {
 			map.put(dirPath, getFileString(dirPath));
