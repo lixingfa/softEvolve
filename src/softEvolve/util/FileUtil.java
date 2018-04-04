@@ -272,18 +272,23 @@ public class FileUtil {
      * @author lixingfa
      * @date 2018年4月2日下午4:56:21
      * @param dirPath
+     * @param shortName 是否启用短名
      * @return Map<String, String>
      */
-    public static Map<String, String> getDirectoryContent(String dirPath) throws Exception{
+    public static Map<String, String> getDirectoryContent(String dirPath,boolean shortName) throws Exception{
     	Map<String, String> map = new HashMap<String, String>();
     	File file = new File(dirPath);
     	if (file.isDirectory()) {//是目录
 			File[] subFiles = file.listFiles();
 			for (int i = 0; i < subFiles.length; i++) {
-				map.putAll(getDirectoryContent(subFiles[i].getAbsolutePath()));
+				map.putAll(getDirectoryContent(subFiles[i].getAbsolutePath(),shortName));
 			}
 		}else {
-			map.put(dirPath, getFileString(dirPath));
+			if (shortName) {
+				map.put(dirPath.substring(dirPath.lastIndexOf("\\") + 1, dirPath.lastIndexOf(".")), getFileString(dirPath));
+			}else {
+				map.put(dirPath, getFileString(dirPath));
+			}
 		}
     	return map;
     }

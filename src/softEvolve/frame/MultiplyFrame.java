@@ -56,8 +56,8 @@ public class MultiplyFrame extends JPanel{
 			append("请选择母软件。");//放着先进的有性生殖不用而去考虑原始的单体繁殖，简直有病
 			return;
 		}
-		Map<String, String> fatherGens = FileUtil.getDirectoryContent(father);
-		Map<String, String> motherGens = FileUtil.getDirectoryContent(mother);
+		Map<String, String> fatherGens = FileUtil.getDirectoryContent(father,true);
+		Map<String, String> motherGens = FileUtil.getDirectoryContent(mother,true);
 		if (fatherGens.isEmpty() || !fatherGens.containsKey(SysConstant.ID)) {
 			append("父软件不是包含基因组的软件。");
 			return;
@@ -66,7 +66,6 @@ public class MultiplyFrame extends JPanel{
 			append("母软件不是包含基因组的软件。");
 			return;
 		}
-		
 		//2、繁衍，双倍体一次可以得到四个后代
 		System.out.println();
 	}
@@ -105,7 +104,7 @@ public class MultiplyFrame extends JPanel{
 		empMsgArea.setWrapStyleWord(true);
 		empMsgArea
 		.setText("通过模仿生物进化的功能，增强自主适应需求的能力。\n"
-				+ "请选择至少选择父母软件的地址。\n"
+				
 				);
 		southPane.add(new JScrollPane(empMsgArea));
 		add(BorderLayout.SOUTH,southPane);
