@@ -48,15 +48,25 @@ public class MultiplyFrame extends JPanel{
 		//1、<基因的名称，基因的内容>
 		String father = fatherPath.getText();
 		String mother = motherPath.getText();
-		if (StringUtils.isBlank(father) && StringUtils.isBlank(mother)) {
-			append("请至少选择一份基因。");			
+		if (StringUtils.isBlank(father)) {
+			append("请选择父软件。");//放着先进的有性生殖不用而去考虑原始的单体繁殖，简直有病
+			return;
+		}
+		if (StringUtils.isBlank(mother)) {
+			append("请选择母软件。");//放着先进的有性生殖不用而去考虑原始的单体繁殖，简直有病
 			return;
 		}
 		Map<String, String> fatherGens = FileUtil.getDirectoryContent(father);
 		Map<String, String> motherGens = FileUtil.getDirectoryContent(mother);
-		if (!fatherGens.isEmpty() && fatherGens.containsKey(SysConstant.ID)) {
-			
+		if (fatherGens.isEmpty() || !fatherGens.containsKey(SysConstant.ID)) {
+			append("父软件不是包含基因组的软件。");
+			return;
 		}
+		if (motherGens.isEmpty() || !motherGens.containsKey(SysConstant.ID)) {
+			append("母软件不是包含基因组的软件。");
+			return;
+		}
+		
 		//2、繁衍，双倍体一次可以得到四个后代
 		System.out.println();
 	}
@@ -94,8 +104,8 @@ public class MultiplyFrame extends JPanel{
 		empMsgArea.setLineWrap(true);//换行
 		empMsgArea.setWrapStyleWord(true);
 		empMsgArea
-		.setText("本功能用于在war包更新时，自动补齐数据库缺少的表和字段。1.4版新增。"
-				+ "\n6、本功能不包含初始化数据的执行。\n"
+		.setText("通过模仿生物进化的功能，增强自主适应需求的能力。\n"
+				+ "请选择至少选择父母软件的地址。\n"
 				);
 		southPane.add(new JScrollPane(empMsgArea));
 		add(BorderLayout.SOUTH,southPane);

@@ -280,7 +280,7 @@ public class FileUtil {
     	if (file.isDirectory()) {//是目录
 			File[] subFiles = file.listFiles();
 			for (int i = 0; i < subFiles.length; i++) {
-				map.putAll(getDirectoryContent(subFiles[0].getAbsolutePath()));
+				map.putAll(getDirectoryContent(subFiles[i].getAbsolutePath()));
 			}
 		}else {
 			map.put(dirPath, getFileString(dirPath));
