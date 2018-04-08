@@ -32,11 +32,11 @@ import softEvolve.util.SWingUtil;
 public class MultiplyFrame extends JPanel{
 	private static final Logger log = Logger.getLogger(MultiplyFrame.class);
 	
-	JTextField fatherPath = new JTextField(24);//项目源码地址
+	JTextField fatherPath = new JTextField(24);//
 	JButton selectfatherPathButton = new JButton("选择");
-	JTextField motherPath = new JTextField(24);//SQL脚本地址
+	JTextField motherPath = new JTextField(24);//
 	JButton selectmotherPathButton = new JButton("选择");
-	JTextField goalAddr = new JTextField(20);//源数据库地址
+	JTextField goalAddr = new JTextField(20);//
 	JTextField goalUser = new JTextField(10);
 	JPasswordField goalPw = new JPasswordField(10);
 	JButton requirement = new JButton("需求变更录入");
@@ -67,7 +67,9 @@ public class MultiplyFrame extends JPanel{
 			return;
 		}
 		//2、繁衍，双倍体一次可以得到四个后代
+		//父母双方各翻倍、染色体部分交换、然后连续分裂两次，得到4个生殖细胞。再组成4个完整的原始细胞。
 		System.out.println();
+		//3、分析、编译
 	}
 	
 	
