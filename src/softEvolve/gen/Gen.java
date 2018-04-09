@@ -18,6 +18,8 @@ import common.constant.SysConstant;
 public class Gen {
 	
 	public Map<String, String>[] multiply(Map<String, String> fatherGens,Map<String, String> motherGens){
+		Map<String, String> fatherGensCopy = new HashMap<String, String>();
+		Map<String, String> motherGensCopy = new HashMap<String, String>();
 		Map<String, String>[] sons = new HashMap[4];
 		Map<String, String> semen[] = new HashMap[4];
 		Map<String, String> egg[] = new HashMap[4];
@@ -26,18 +28,48 @@ public class Gen {
 			semen[i] = new HashMap<String, String>();
 			egg[i] = new HashMap<String, String>();
 		}
-		//先将父母染色体随机分成两个生殖细胞
-		Set<Entry<String, String>> fatherSet = fatherGens.entrySet();
-		for (Entry<String, String> entry: fatherSet) {
-			if (entry.getKey().endsWith(SysConstant.FATHER)) {
-				
-			}else {
-				
-			}
+		//1、染色体倍增
+		//父染色体增加一倍
+		for (Entry<String, String> entry: fatherGens.entrySet()) {
+			fatherGensCopy.put(entry.getKey(), entry.getValue());
 		}
-		//父母染色体交换，再分裂得到生殖细胞
+		//新增的染色体发生部分交换
+		gensExchange(fatherGensCopy);
+		//母染色体增加一倍
+		for (Entry<String, String> entry: motherGens.entrySet()) {
+			motherGensCopy.put(entry.getKey(), entry.getValue());
+		}
+		//新增的染色体发生部分交换
+		gensExchange(motherGensCopy);
+		//2、分裂成四个生殖细胞
+		
 		
 		return sons;
+	}
+	
+	/**
+	 * gensExchange:(双倍体中父母双方的基因发生部分交换)
+	 * @author lixingfa
+	 * @date 2018年4月9日上午11:23:10
+	 * @param gens
+	 */
+	private void gensExchange(Map<String, String> gens){
+		//每对染色体都随机互换一部分
+		//1、找出同源染色体
+		for (Entry<String, String> entry: gens.entrySet()) {
+			String key = entry.getKey();
+			String genName = key.substring(0, key.indexOf("-") -1);
+			for (Entry<String, String> other: gens.entrySet()) {
+				if (other.getKey().startsWith(genName) && !other.getKey().equals(key)) {
+					//2、交换完整的，有效的基因，包括内含子和外显子
+					String gen = entry.getValue();
+					String otherGen = other.getValue();
+					
+					
+					break;
+				}
+			}
+		}
 	}
 
 }
