@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import common.constant.GenConstant;
 import common.constant.SysConstant;
 
 /**
@@ -62,10 +63,16 @@ public class Gen {
 			for (Entry<String, String> other: gens.entrySet()) {
 				if (other.getKey().startsWith(genName) && !other.getKey().equals(key)) {
 					//2、交换完整的，有效的基因，包括内含子和外显子
-					String gen = entry.getValue();
-					String otherGen = other.getValue();
-					
-					
+					char[] gen = entry.getValue().toCharArray();
+					char[] otherGen = other.getValue().toCharArray();
+					int begin = (int)(gen.length * Math.random());
+					int end = begin + (int)(gen.length * GenConstant.EXCHANGE_PERCENT);
+					for (int i = begin; i <= end; ) {
+						if (gen[i] == '-') {
+							//gen和otherGen的坐标是不一样的
+						}
+						i++;
+					}
 					break;
 				}
 			}
