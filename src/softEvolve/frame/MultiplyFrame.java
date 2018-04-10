@@ -106,7 +106,8 @@ public class MultiplyFrame extends JPanel{
 		empMsgArea.setWrapStyleWord(true);
 		empMsgArea
 		.setText("通过模仿生物进化的功能，增强自主适应需求的能力。\n"
-				
+				+"让人寻求改变的是困境，让人不断前进的是梦想。\n"
+				+"与创新相比，改变现状更难。\n"
 				);
 		southPane.add(new JScrollPane(empMsgArea));
 		add(BorderLayout.SOUTH,southPane);
