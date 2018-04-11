@@ -19,8 +19,17 @@ import common.constant.SysConstant;
  * @date 2018年4月4日下午5:39:00
  * 
  */
-public class Gen {
+public class Multiply {
 	
+	/**
+	 * multiply:(繁殖，父母双方的染色体各倍增一次，然后分裂成四个生殖细胞，这些细胞再组成四个原始细胞)
+	 * @author lixingfa
+	 * @date 2018年4月11日上午10:26:29
+	 * @param fatherGens
+	 * @param motherGens
+	 * @return
+	 * @throws Exception
+	 */
 	public Map<String, String>[] multiply(Map<String, String> fatherGens,Map<String, String> motherGens) throws Exception{
 		Map<String, String> fatherGensCopy = new HashMap<String, String>();
 		Map<String, String> motherGensCopy = new HashMap<String, String>();
@@ -116,7 +125,7 @@ public class Gen {
 								o.append(otherGen[oIndex]);								
 							}
 						} catch (Exception e) {
-							throw new Exception("下标越界，gen.length=" + gen.length + ",gIndex=" + gIndex 
+							throw new Exception("染色体交换时下标越界，gen.length=" + gen.length + ",gIndex=" + gIndex 
 									+ ",otherGen.length=" + otherGen.length + ",oIndex=" + oIndex);
 						}
 						gIndex++;
