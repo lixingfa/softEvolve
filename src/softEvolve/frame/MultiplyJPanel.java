@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import common.constant.SysConstant;
-import softEvolve.compile.GenCompile;
+import softEvolve.compile.gen.GenCompile;
 import softEvolve.gen.Multiply;
 import softEvolve.util.FileUtil;
 import softEvolve.util.SWingUtil;
@@ -30,8 +30,8 @@ import softEvolve.util.SWingUtil;
  * @date 2018年4月2日上午11:42:41
  * 
  */
-public class MultiplyFrame extends JPanel{
-	private static final Logger log = Logger.getLogger(MultiplyFrame.class);
+public class MultiplyJPanel extends JPanel{
+	private static final Logger log = Logger.getLogger(MultiplyJPanel.class);
 	
 	JTextField fatherPath = new JTextField(24);//
 	JButton selectFatherPathButton = new JButton("选择");
@@ -43,7 +43,6 @@ public class MultiplyFrame extends JPanel{
 //	JTextField goalAddr = new JTextField(20);//
 	JTextField goalUser = new JTextField(10);
 	JPasswordField goalPw = new JPasswordField(10);
-	JButton requirement = new JButton("需求变更录入");
 	JButton multiply = new JButton("繁衍");
 	JTextArea empMsgArea = new JTextArea(33,76);
 
@@ -92,7 +91,13 @@ public class MultiplyFrame extends JPanel{
 		append("重组子代基因完成。");
 		//4、基因编译成源码		
 		append("基因编码。");
-		GenCompile.compile(sons, sonPath.getText());
+		for (int i = 0; i < sons.length; i++) {
+			try {
+				GenCompile.compile(sons[i], sonPath.getText());				
+			} catch (Exception e) {
+				append("编译第" + i + "个子代时发生错误。错误信息：" + e.getMessage());
+			}
+		}
 		append("基因编码完成。");
 		//5、源码编译成可运行的机器码
 		append("源码编译成可运行的机器码。");
@@ -103,7 +108,7 @@ public class MultiplyFrame extends JPanel{
 	
 	
 	/**界面处理******************************************************************/
-	public MultiplyFrame() {		
+	public MultiplyJPanel() {		
 		setLayout(new BorderLayout());//北、南、东、西、中布局
 		//
 		JPanel northPane = new JPanel();
@@ -127,7 +132,6 @@ public class MultiplyFrame extends JPanel{
 //		centerPanel.add(goalUser);
 //		centerPanel.add(new JLabel(" 密码："));
 //		centerPanel.add(goalPw);
-		centerPanel.add(requirement);
 		centerPanel.add(multiply);
 //		multiply.setEnabled(false);
 		add(BorderLayout.CENTER,centerPanel);
@@ -139,6 +143,7 @@ public class MultiplyFrame extends JPanel{
 		.setText("通过模仿生物进化的功能，增强自主适应需求的能力。\n"
 				+"让人寻求改变的是困境，让人不断前进的是梦想。\n"
 				+"与创新相比，改变现状更难。\n"
+				+"个性化的小需求，是市场的主流。因为高峰永远就那些而已。\n"
 				);
 		southPane.add(new JScrollPane(empMsgArea));
 		add(BorderLayout.SOUTH,southPane);
@@ -179,14 +184,6 @@ public class MultiplyFrame extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {				
 				SWingUtil.chooser(sonPath);
-			}
-		});
-		
-		//测试数据库
-		requirement.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-//				initsourConn();
 			}
 		});
 	}

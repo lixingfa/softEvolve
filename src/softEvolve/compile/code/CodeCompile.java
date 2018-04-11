@@ -1,7 +1,7 @@
 /**
  * 源码编译，将项目源码编译成可运行的机器码
  */
-package softEvolve.compile;
+package softEvolve.compile.code;
 
 /**
  * @author lixingfa
