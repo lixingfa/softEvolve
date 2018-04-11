@@ -30,7 +30,7 @@ public class Multiply {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String, String>[] multiply(Map<String, String> fatherGens,Map<String, String> motherGens) throws Exception{
+	public static Map<String, String>[] multiply(Map<String, String> fatherGens,Map<String, String> motherGens) throws Exception{
 		Map<String, String> fatherGensCopy = new HashMap<String, String>();
 		Map<String, String> motherGensCopy = new HashMap<String, String>();
 		Map<String, String>[] sons = new HashMap[4];
@@ -74,7 +74,7 @@ public class Multiply {
 	 * @date 2018年4月9日上午11:23:10
 	 * @param gens
 	 */
-	private void gensExchange(Map<String, String> gens) throws Exception{
+	private static void gensExchange(Map<String, String> gens) throws Exception{
 		//每对染色体都随机互换一部分
 		//1、找出同源染色体
 		Set<String> hasExchange = new HashSet<String>();
@@ -149,7 +149,7 @@ public class Multiply {
 	 * @param parentCopy 倍增的基因
 	 * @return 4个生殖细胞，即只有原基因一半的细胞
 	 */
-	private Map<String, String>[] getSemensOrEggs(Map<String, String> parent, Map<String, String> parentCopy){
+	private static Map<String, String>[] getSemensOrEggs(Map<String, String> parent, Map<String, String> parentCopy){
 		Map<String, String> se[] = new HashMap[4];
 		for (int i = 0; i < se.length; i++) {
 			se[i] = new HashMap<String, String>();
@@ -184,7 +184,7 @@ public class Multiply {
 	 * @param gens
 	 * @param tips
 	 */
-	private Map<String, String> addParentTips(Map<String, String> gens,String tips){
+	private static Map<String, String> addParentTips(Map<String, String> gens,String tips){
 		Map<String, String> map = new HashMap<String, String>();
 		for (Entry<String, String> entry: gens.entrySet()) {
 			map.put(entry.getKey() + tips, entry.getValue());

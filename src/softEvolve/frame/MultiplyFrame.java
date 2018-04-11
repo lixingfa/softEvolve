@@ -79,7 +79,7 @@ public class MultiplyFrame extends JPanel{
 		//父母双方各翻倍、染色体部分交换、然后连续分裂两次，得到4个生殖细胞。再组成4个完整的原始细胞。
 		Map<String, String>[] sons;
 		try {
-			sons = new Multiply().multiply(fatherGens, motherGens);
+			sons = Multiply.multiply(fatherGens, motherGens);
 		} catch (Exception e) {
 			append("繁衍时发送错。father：" + father + "，mother:" + mother);
 			append(e.getMessage());
