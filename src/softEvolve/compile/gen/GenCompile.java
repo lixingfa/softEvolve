@@ -3,8 +3,12 @@
  */
 package softEvolve.compile.gen;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
+
+import common.constant.SysConstant;
 
 /**
  * @author lixingfa
@@ -57,5 +61,23 @@ public class GenCompile {
 				return father;
 			}
 		}
+	}
+	
+	/**
+	 * 根据父母双方的id，获得子代的id
+	 * @param prefix 六位前缀依次为使用的语言、语言版本、项目类型、界面、存储、
+	 * @param fatherId 父id
+	 * @param motherId 母id
+	 * @return 完整的子代id文件中的信息
+	 */
+	public static String getIdInfo(String prefix,String fatherId,String motherId){
+		StringBuffer id = new StringBuffer(SysConstant.ID);
+		id.append("=");
+		id.append(prefix);//前缀
+		id.append(new SimpleDateFormat("yyyyMMddhhmmssSSSS").format(new Date()));//时间
+		id.append("\r\n");
+		id.append(SysConstant.FATHER).append("=").append(fatherId).append("\r\n");
+		id.append(SysConstant.MOTHER).append("=").append(motherId).append("\r\n");
+		return id.toString();
 	}
 }

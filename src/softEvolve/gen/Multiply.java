@@ -153,6 +153,7 @@ public class Multiply {
 		Map<String, String> se[] = new HashMap[4];
 		for (int i = 0; i < se.length; i++) {
 			se[i] = new HashMap<String, String>();
+			se[i].put(SysConstant.ID, parent.get(SysConstant.ID));
 		}
 		for (Entry<String, String> entry: parent.entrySet()) {
 			String key = entry.getKey();
@@ -187,7 +188,7 @@ public class Multiply {
 	private static Map<String, String> addParentTips(Map<String, String> gens,String tips){
 		Map<String, String> map = new HashMap<String, String>();
 		for (Entry<String, String> entry: gens.entrySet()) {
-			map.put(entry.getKey() + tips, entry.getValue());
+			map.put(entry.getKey() + tips, entry.getValue());//id也带父母双方的
 		}
 		return map;
 	}

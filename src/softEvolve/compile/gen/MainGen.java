@@ -12,17 +12,28 @@ public class MainGen {
 	 * @return String
 	 * @throws Exception
 	 */
-	public static String compile(String gens,String path) throws Exception{
+	public static String compile(String gens,String path,String fatherId,String motherId) throws Exception{
 		char[] gen = gens.toCharArray();
 		//第一位处理
 		switch (gen[0]) {
-			case '0':
-				
-				break;
-	
-			default:
-				break;
+			case '0':java(gen[1],gen[2]);break;
+			default:break;
 		}
+		return null;
+	}
+	
+	/**
+	 * @param jdk
+	 * @param projectType
+	 * @return
+	 */
+	private static String java(char jdk,char projectType){
+		
+		return null;
+	}
+	
+	private static String buildJavaProject(String jdk,String jdkPath,String path,String fatherId,String motherId){
+		String id = GenCompile.getIdInfo(prefix, fatherId, motherId);
 		return null;
 	}
 }
