@@ -17,7 +17,7 @@ public class MainGen {
 	 * @return String
 	 * @throws Exception
 	 */
-	public static String compile(String gens,String path,String fatherId,String motherId) throws Exception{
+	public static String compile(String gens,String path) throws Exception{
 		char[] gen = gens.toCharArray();
 		return Project.init(gen[0], gen[1], gen[2], gen[3], gen[4],path);
 	}

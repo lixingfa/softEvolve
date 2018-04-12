@@ -7,6 +7,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import softEvolve.util.FileUtil;
@@ -28,8 +29,10 @@ public class GenCompile {
      */
 	public static void compile(Map<String, String> gens,String path) throws Exception{
 		//1、Main基因确定软件性质
-		
+		String mainGen = theCompileGen(gens.get(SysConstant.FATHER),gens.get(SysConstant.MOTHER));
+		path = MainGen.compile(mainGen, path);
 		//2、
+		writeIdentity(path, id, fatherId, motherId, gens);
 	}
 	
 	/**
@@ -97,6 +100,11 @@ public class GenCompile {
 		//2、基因
 		File gen = new File(identity.getPath() + "/" + SysConstant.GEN + "/");
 		gen.mkdir();
-		
+		gens.remove(SysConstant.ID + "-" + SysConstant.FATHER);
+		gens.remove(SysConstant.ID + "-" + SysConstant.MOTHER);
+		for (Entry<String, String> entry : gens.entrySet()) {
+			File g = new File(gen.getPath() + "/" + entry.getKey() + ".txt");
+			FileUtil.writeTxtFile(entry.getKey() + "=" + entry.getValue(), g.getPath());
+		}
 	}
 }
