@@ -3,11 +3,13 @@
  */
 package softEvolve.compile.gen;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 
+import softEvolve.util.FileUtil;
 import common.constant.SysConstant;
 
 /**
@@ -16,8 +18,6 @@ import common.constant.SysConstant;
  * 
  */
 public class GenCompile {
-
-	private Properties prop;
 	/**
      * compile:(将基因组编译成源代码，生成工程放到指定路径下)
      * @author lixingfa
@@ -52,7 +52,7 @@ public class GenCompile {
 		}else {//再进行一轮竞争
 			char[] m = mother.toCharArray();
 			for (int i = 0; i < 10; i++) {
-				total = total + m[(int)(Math.random() * f.length)];
+				total = total + m[(int)(Math.random() * m.length)];
 			}
 			total = total % 2;
 			if (total == 0) {
@@ -70,5 +70,33 @@ public class GenCompile {
 	 */
 	public static String getIdInfo(String prefix){
 		return prefix + new SimpleDateFormat("yyyyMMddhhmmssSSSS").format(new Date());
+	}
+	
+	/**
+	 * writeIdentity:(写入身份信息)
+	 * @author lixingfa
+	 * @date 2018年4月12日下午8:11:29
+	 * @param path
+	 * @param id
+	 * @param fatherId
+	 * @param motherId
+	 * @param gens
+	 * @throws Exception
+	 */
+	private static void writeIdentity(String path,String id,String fatherId,String motherId,Map<String, String> gens)
+			throws Exception{
+		//1、写入身份信息
+		File identity = new File(path + "/" + SysConstant.IDENTITY + "/");
+		identity.mkdir();
+		File idFile = new File(identity.getPath() + "/" + SysConstant.ID + ".txt");
+		StringBuffer idTxt = new StringBuffer(SysConstant.ID);
+		idTxt.append("=").append(id).append("\r\n");
+		idTxt.append(SysConstant.FATHER).append("=").append(fatherId).append("\r\n");
+		idTxt.append(SysConstant.MOTHER).append("=").append(motherId).append("\r\n");
+		FileUtil.writeTxtFile(idTxt.toString(), idFile.getPath());
+		//2、基因
+		File gen = new File(identity.getPath() + "/" + SysConstant.GEN + "/");
+		gen.mkdir();
+		
 	}
 }

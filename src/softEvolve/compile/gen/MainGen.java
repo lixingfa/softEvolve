@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Map;
 
 import common.constant.SysConstant;
-
+import softEvolve.compile.project.Project;
 import softEvolve.util.FileUtil;
 
 public class MainGen {
@@ -19,57 +19,8 @@ public class MainGen {
 	 */
 	public static String compile(String gens,String path,String fatherId,String motherId) throws Exception{
 		char[] gen = gens.toCharArray();
-		//第一位处理
-		switch (gen[0]) {
-			case '0':java(gen[1],gen[2]);break;
-			default:break;
-		}
-		return null;
+		return Project.init(gen[0], gen[1], gen[2], gen[3], gen[4],path);
 	}
 	
-	/**
-	 * @param jdk
-	 * @param projectType
-	 * @return
-	 */
-	private static String java(char jdk,char projectType){
-		
-		return null;
-	}
 	
-	/**
-	 * buildJavaProject:(建立JavaProject工程)
-	 * @author lixingfa
-	 * @date 2018年4月12日下午12:16:37
-	 * @param prefix
-	 * @param fatherId
-	 * @param motherId
-	 * @return
-	 */
-	private static String buildJavaProject(String path,String prefix,String fatherId,String motherId)
-			throws Exception{
-		//1、获取项目的id，也是项目名称
-		String id = GenCompile.getIdInfo(prefix);
-		File project = new File(path + "/" + id + "/");
-		if (!project.exists()) {//不存在
-			if (!project.mkdir()) {
-				throw new Exception(project.getPath() + "创建不成功\n");
-			}
-		}else {//清空文件夹
-			FileUtil.FileDelete(project);			
-		}
-		//2、写入身份信息和基因
-		File identity = new File(project.getPath() + "/" + SysConstant.IDENTITY + "/");
-		identity.mkdir();
-		File idFile = new File(identity.getPath() + "/" + SysConstant.ID + ".txt");
-		StringBuffer idTxt = new StringBuffer(SysConstant.ID);
-		idTxt.append("=").append(id).append("\r\n");
-		idTxt.append(SysConstant.FATHER).append("=").append(fatherId).append("\r\n");
-		idTxt.append(SysConstant.MOTHER).append("=").append(motherId).append("\r\n");
-		FileUtil.writeTxtFile(idTxt.toString(), idFile.getPath());
-		File gen = new File(project.getPath() + "/" + SysConstant.GEN + "/");
-		gen.mkdir();
-		
-		return null;
-	}
 }
