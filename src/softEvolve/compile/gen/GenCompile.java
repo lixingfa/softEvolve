@@ -66,18 +66,9 @@ public class GenCompile {
 	/**
 	 * 根据父母双方的id，获得子代的id
 	 * @param prefix 六位前缀依次为使用的语言、语言版本、项目类型、界面、存储、
-	 * @param fatherId 父id
-	 * @param motherId 母id
-	 * @return 完整的子代id文件中的信息
+	 * @return 子代id
 	 */
-	public static String getIdInfo(String prefix,String fatherId,String motherId){
-		StringBuffer id = new StringBuffer(SysConstant.ID);
-		id.append("=");
-		id.append(prefix);//前缀
-		id.append(new SimpleDateFormat("yyyyMMddhhmmssSSSS").format(new Date()));//时间
-		id.append("\r\n");
-		id.append(SysConstant.FATHER).append("=").append(fatherId).append("\r\n");
-		id.append(SysConstant.MOTHER).append("=").append(motherId).append("\r\n");
-		return id.toString();
+	public static String getIdInfo(String prefix){
+		return prefix + new SimpleDateFormat("yyyyMMddhhmmssSSSS").format(new Date());
 	}
 }
