@@ -41,7 +41,7 @@ public class JavaProject {
 			case '4':JDKVersions = "10";break;
 			default:JDKVersions = "1.6";break;
 		}
-		JDKPath = prop.getProperty("JDK" + JDKVersions);
+//		JDKPath = prop.getProperty("JDK" + JDKVersions);
 		switch (projectType) {//项目类型
 			case '0':return initJavaProject(languageVersions,view, store,path);
 	
@@ -56,7 +56,7 @@ public class JavaProject {
 	 * @param languageVersions
 	 * @param view
 	 * @param store
-	 * @return
+	 * @return String 工程路径
 	 */
 	private static String initJavaProject(char languageVersions,char view,char store,String path) throws Exception{
 		String id = GenCompile.getIdInfo("JavaProject0" + languageVersions + "0" + view + store);
@@ -69,6 +69,6 @@ public class JavaProject {
 			FileUtil.FileDelete(project);			
 		}
 		
-		return id;
+		return project.getPath();
 	}
 }

@@ -52,16 +52,17 @@ public class Multiply {
 		Map<String, String> egg[] = getSemensOrEggs(motherGens, motherGensCopy);
 		//3、生殖细胞随机组合成新的原始细胞
 		for (int i = 0; i < sons.length; i++) {
+			sons[i] = new HashMap<String, String>();
 			int si = (int)(Math.random() * 10) % 4;
 			while (semen[si] == null) {
 				si = (int)(Math.random() * 10) % 4;
 			}
 			int ei = (int)(Math.random() * 10) % 4;
-			while (egg[si] == null) {
+			while (egg[ei] == null) {
 				ei = (int)(Math.random() * 10) % 4;
 			}
 			sons[i].putAll(addParentTips(semen[si], "-" + SysConstant.FATHER));
-			sons[i].putAll(addParentTips(egg[si], "-" + SysConstant.MOTHER));
+			sons[i].putAll(addParentTips(egg[ei], "-" + SysConstant.MOTHER));
 			semen[si] = null;
 			egg[ei] = null;
 		}		
@@ -80,7 +81,10 @@ public class Multiply {
 		Set<String> hasExchange = new HashSet<String>();
 		for (Entry<String, String> entry: gens.entrySet()) {
 			String key = entry.getKey();
-			String genName = key.substring(0, key.indexOf("-") -1);
+			if (key.equals(SysConstant.ID)) {
+				continue;
+			}
+			String genName = key.substring(0, key.indexOf("-"));
 			for (Entry<String, String> other: gens.entrySet()) {
 				if (!hasExchange.contains(genName) && other.getKey().startsWith(genName) && !other.getKey().equals(key)) {
 					//2、交换完整的，有效的基因，包括内含子和外显子
@@ -157,7 +161,10 @@ public class Multiply {
 		}
 		for (Entry<String, String> entry: parent.entrySet()) {
 			String key = entry.getKey();
-			String genName = key.substring(0, key.indexOf("-") -1);
+			if (key.equals(SysConstant.ID)) {
+				continue;
+			}
+			String genName = key.substring(0, key.indexOf("-"));
 			int i = (int)(Math.random() * 10) % 2;//保证乱序
 			if (se[i].containsKey(genName)) {
 				se[(i + 1) % 2].put(genName, entry.getValue());
@@ -167,7 +174,10 @@ public class Multiply {
 		}
 		for (Entry<String, String> entry: parentCopy.entrySet()) {
 			String key = entry.getKey();
-			String genName = key.substring(0, key.indexOf("-") -1);
+			if (key.equals(SysConstant.ID)) {
+				continue;
+			}
+			String genName = key.substring(0, key.indexOf("-"));
 			int i = (int)(Math.random() * 10) % 2;
 			if (se[i + 2].containsKey(genName)) {
 				se[(i + 1) % 2 + 2].put(genName, entry.getValue());

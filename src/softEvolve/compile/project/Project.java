@@ -23,7 +23,8 @@ public class Project {
 	 * @param store 存储类型
 	 * @return 构建的项目路径
 	 */
-	public static String init(char language,char languageVersions,char projectType,char view,char store,String path){
+	public static String init(char language,char languageVersions,char projectType,char view,char store,String path) 
+	throws Exception{
 		switch (language) {
 			case '0': return JavaProject.init(languageVersions, projectType,view,store,path);
 			

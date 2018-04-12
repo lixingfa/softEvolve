@@ -28,11 +28,13 @@ public class GenCompile {
      * @return 
      */
 	public static void compile(Map<String, String> gens,String path) throws Exception{
-		//1、Main基因确定软件性质
-		String mainGen = theCompileGen(gens.get(SysConstant.FATHER),gens.get(SysConstant.MOTHER));
+		//1、获取要编译的main基因
+		String mainGen = theCompileGen(gens.get(SysConstant.MAIN + "-" + SysConstant.FATHER),
+				gens.get(SysConstant.MAIN + "-" + SysConstant.MOTHER));
+		//2、根据main基因初始化工程
 		path = MainGen.compile(mainGen, path);
-		//2、
-		writeIdentity(path, id, fatherId, motherId, gens);
+		//3、写入软件身份信息及基因
+		writeIdentity(path,gens);
 	}
 	
 	/**
@@ -43,7 +45,7 @@ public class GenCompile {
 	 * @param mother 母基因
 	 * @return String
 	 */
-	private String theCompileGen(String father,String mother){
+	private static String theCompileGen(String father,String mother){
 		char[] f = father.toCharArray();//TODO 有待优化
 		Long total = 0L;
 		for (int i = 0; i < 10; i++) {
@@ -86,16 +88,23 @@ public class GenCompile {
 	 * @param gens
 	 * @throws Exception
 	 */
-	private static void writeIdentity(String path,String id,String fatherId,String motherId,Map<String, String> gens)
+	private static void writeIdentity(String path,Map<String, String> gens)
 			throws Exception{
 		//1、写入身份信息
 		File identity = new File(path + "/" + SysConstant.IDENTITY + "/");
 		identity.mkdir();
 		File idFile = new File(identity.getPath() + "/" + SysConstant.ID + ".txt");
 		StringBuffer idTxt = new StringBuffer(SysConstant.ID);
-		idTxt.append("=").append(id).append("\r\n");
-		idTxt.append(SysConstant.FATHER).append("=").append(fatherId).append("\r\n");
-		idTxt.append(SysConstant.MOTHER).append("=").append(motherId).append("\r\n");
+		String id = path.substring(path.lastIndexOf("\\") + 1);
+		idTxt.append("=").append(id).append("\r\n");		
+		idTxt.append(SysConstant.FATHER).append("=");
+		String fatherId = gens.get(SysConstant.ID + "-" + SysConstant.FATHER);
+		fatherId = fatherId.substring(fatherId.indexOf("=") + 1,fatherId.indexOf(SysConstant.FATHER));
+		idTxt.append(fatherId).append("\r\n");
+		idTxt.append(SysConstant.MOTHER).append("=");
+		String motherId = gens.get(SysConstant.ID + "-" + SysConstant.MOTHER);
+		motherId = motherId.substring(motherId.indexOf("=") + 1,motherId.indexOf(SysConstant.MOTHER));
+		idTxt.append(motherId).append("\r\n");
 		FileUtil.writeTxtFile(idTxt.toString(), idFile.getPath());
 		//2、基因
 		File gen = new File(identity.getPath() + "/" + SysConstant.GEN + "/");
@@ -104,7 +113,8 @@ public class GenCompile {
 		gens.remove(SysConstant.ID + "-" + SysConstant.MOTHER);
 		for (Entry<String, String> entry : gens.entrySet()) {
 			File g = new File(gen.getPath() + "/" + entry.getKey() + ".txt");
-			FileUtil.writeTxtFile(entry.getKey() + "=" + entry.getValue(), g.getPath());
+			FileUtil.writeTxtFile(entry.getValue(), g.getPath());
 		}
 	}
+	
 }

@@ -7,17 +7,10 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
-
-import com.alibaba.fastjson.util.IOUtils;
 
 /**
  * @author lixingfa
@@ -26,39 +19,13 @@ import com.alibaba.fastjson.util.IOUtils;
  */
 public class MainFrame extends JFrame{
 
-	JTabbedPane tab = new JTabbedPane();// 存放选项卡的组件	
-	
-	/**系统配置*/
-	private Properties prop;
+	JTabbedPane tab = new JTabbedPane();// 存放选项卡的组件
 	
 	/**面板***************************************************************/
 	private void initTab(){
 		tab.addTab("繁衍", new MultiplyJPanel());
 		tab.addTab("需求", new DemandJPanel());
 		add(tab);
-		initPro();
-	}
-	
-	/**初始化*****************************************************************/
-	private void initPro(){
-		//初始化配置类
-		File[] properties = new File(System.getProperty("user.dir")).listFiles();
-		for (File file : properties) {
-			if (file.isFile()) {
-				InputStream in = null;
-				try {
-					in = new FileInputStream(file);//从当前类的目录下面找
-					prop.load(in);						
-				} catch (Exception e) {
-					JOptionPane.showConfirmDialog(null, "初始化配置文件发生错误。\n错误信息：" + e.getMessage()
-							,"发生错误",JOptionPane.DEFAULT_OPTION,JOptionPane.WARNING_MESSAGE);
-				}finally{
-					IOUtils.close(in);
-				}
-			}
-		}			
-		//空库面板
-//			dataBaseJPanel.setPropConfig(propConfig);
 	}
 	
 	public MainFrame(){
