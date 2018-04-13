@@ -63,8 +63,8 @@ public class MultiplyJPanel extends JPanel{
 			append("请选择子代路径。");
 			return;
 		}
-		Map<String, String> fatherGens = FileUtil.getDirectoryContent(father,true);
-		Map<String, String> motherGens = FileUtil.getDirectoryContent(mother,true);
+		Map<String, String> fatherGens = FileUtil.getDirectoryContent(father,1);
+		Map<String, String> motherGens = FileUtil.getDirectoryContent(mother,1);
 		if (fatherGens.isEmpty() || !fatherGens.containsKey(SysConstant.ID)) {
 			append("父软件不是包含基因组的软件。");
 			return;

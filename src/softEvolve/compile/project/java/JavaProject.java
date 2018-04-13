@@ -4,6 +4,8 @@
 package softEvolve.compile.project.java;
 
 import java.io.File;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import softEvolve.compile.gen.GenCompile;
@@ -59,6 +61,7 @@ public class JavaProject {
 	 * @return String 工程路径
 	 */
 	private static String initJavaProject(char languageVersions,char view,char store,String path) throws Exception{
+		//1、获取项目id，创建项目目录
 		String id = GenCompile.getIdInfo("JavaProject0" + languageVersions + "0" + view + store);
 		File project = new File(path + "/" + id + "/");
 		if (!project.exists()) {//不存在
@@ -68,6 +71,24 @@ public class JavaProject {
 		}else {//清空文件夹
 			FileUtil.FileDelete(project);			
 		}
+		//2、替换初始化文件
+		Map<String, String> projectFile = FileUtil.getDirectoryContent("properties/JAVA/projectFile/", 0);
+		
+		String txt = projectFile.get("properties/JAVA/projectFile/.settings/org.eclipse.jdt.core.prefs");
+		projectFile.put("properties/JAVA/projectFile/.settings/org.eclipse.jdt.core.prefs", txt.replace("JDKVersions", JDKVersions));
+		
+		txt = projectFile.get("properties/JAVA/projectFile/.project");
+		projectFile.put("properties/JAVA/projectFile/.project", txt.replace("projectName", id));
+		
+		//3、写入初始化文件
+		for (Entry<String, String> entry : projectFile.entrySet()) {
+			FileUtil.writeTxtFile(entry.getValue(), entry.getKey());
+		}
+		//写入初始化目录
+		File src = new File(project.getPath() + "/src");
+		src.mkdir();
+		//TODO  包名的前缀可以由界面输入，或者从基因写入
+		//
 		
 		return project.getPath();
 	}

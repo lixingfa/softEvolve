@@ -235,7 +235,7 @@ public class FileUtil {
      * @param fileName
      * @return 文件内容
      */
-    public static String getFileString(String fileName) throws Exception{
+    public static String getFileString(String fileName,boolean keepLines) throws Exception{
     	if (new File(fileName).isDirectory()) {
 			throw new Exception("读取文件内容出错，" + fileName + "是一个文件夹！");
 		}
@@ -249,6 +249,9 @@ public class FileUtil {
             // 一次读入一行，直到读入null为文件结束
             while ((tempString = reader.readLine()) != null) {
                 sBuffer.append(tempString);
+                if (keepLines) {
+					sBuffer.append("\r\n");
+				}
                 line++;
             }
             reader.close();
@@ -272,25 +275,39 @@ public class FileUtil {
      * @author lixingfa
      * @date 2018年4月2日下午4:56:21
      * @param dirPath
-     * @param shortName 是否启用短名
+     * @param shortNameType 短名类型，0、完整路径；1、只要文件名，不要后缀；2、要文件名称和后缀
+     * @param 是否保留换行
      * @return Map<String, String>
      */
-    public static Map<String, String> getDirectoryContent(String dirPath,boolean shortName) throws Exception{
+    public static Map<String, String> getDirectoryContent(String dirPath,int shortNameType,boolean keepLins) throws Exception{
     	Map<String, String> map = new HashMap<String, String>();
     	File file = new File(dirPath);
     	if (file.isDirectory()) {//是目录
 			File[] subFiles = file.listFiles();
 			for (int i = 0; i < subFiles.length; i++) {
-				map.putAll(getDirectoryContent(subFiles[i].getAbsolutePath(),shortName));
+				map.putAll(getDirectoryContent(subFiles[i].getAbsolutePath(),shortNameType,keepLins));
 			}
 		}else {
-			if (shortName) {
-				map.put(dirPath.substring(dirPath.lastIndexOf("\\") + 1, dirPath.lastIndexOf(".")), getFileString(dirPath));
-			}else {
-				map.put(dirPath, getFileString(dirPath));
+			switch (shortNameType) {
+				case 0://完整路径
+					map.put(dirPath, getFileString(dirPath,keepLins));					
+					break;
+				case 1://只要文件名，不要后缀
+					map.put(dirPath.substring(dirPath.lastIndexOf("\\") + 1, dirPath.lastIndexOf(".")), getFileString(dirPath,keepLins));
+					break;
+				case 2://要文件名和后缀
+					map.put(dirPath.substring(dirPath.lastIndexOf("\\") + 1), getFileString(dirPath,keepLins));
+					break;
+				default:
+					map.put(dirPath, getFileString(dirPath,keepLins));
+					break;
 			}
 		}
     	return map;
+    }
+    
+    public static Map<String, String> getDirectoryContent(String dirPath,int shortNameType) throws Exception{
+    	return getDirectoryContent(dirPath, shortNameType, true);
     }
     
     /**
