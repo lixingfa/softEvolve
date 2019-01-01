@@ -48,6 +48,8 @@ public class MultiplyJPanel extends JPanel{
 
 	
 	private void multiply() throws Exception{
+		append("==========软件编译开始===========");		
+		
 		//1、<基因的名称，基因的内容>
 		String father = fatherPath.getText();
 		String mother = motherPath.getText();
@@ -80,7 +82,7 @@ public class MultiplyJPanel extends JPanel{
 		try {
 			sons = Multiply.multiply(fatherGens, motherGens);
 		} catch (Exception e) {
-			append("繁衍时发送错。father：" + father + "，mother:" + mother);
+			append("繁衍时发生错。father：" + father + "，mother:" + mother);
 			append(e.getMessage());
 			return;
 		}

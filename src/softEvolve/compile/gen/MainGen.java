@@ -22,5 +22,4 @@ public class MainGen {
 		return Project.init(gen[0], gen[1], gen[2], gen[3], gen[4],path);
 	}
 	
-	
 }

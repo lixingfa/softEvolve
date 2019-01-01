@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import softEvolve.util.FileUtil;
+import common.constant.GenConstant;
 import common.constant.SysConstant;
 
 /**
@@ -29,8 +30,8 @@ public class GenCompile {
      */
 	public static void compile(Map<String, String> gens,String path) throws Exception{
 		//1、获取要编译的main基因
-		String mainGen = theCompileGen(gens.get(SysConstant.MAIN + "-" + SysConstant.FATHER),
-				gens.get(SysConstant.MAIN + "-" + SysConstant.MOTHER));
+		String mainGen = theCompileGen(gens.get(GenConstant.CONSTRUCTION + "-" + SysConstant.FATHER),
+				gens.get(GenConstant.CONSTRUCTION + "-" + SysConstant.MOTHER));
 		//2、根据main基因初始化工程
 		path = MainGen.compile(mainGen, path);
 		//3、写入软件身份信息及基因
