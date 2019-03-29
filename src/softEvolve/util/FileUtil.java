@@ -16,8 +16,14 @@ import java.io.RandomAccessFile;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * @author lixingfa
@@ -163,17 +169,17 @@ public class FileUtil {
         int line = 1;
         try {
         	String charset = codeString(fileName);
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), Charset.forName(charset)));//gbk转utf-8
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), Charset.forName("utf-8")));//gbk转utf-8
             String tempString = null;
             // 一次读入一行，直到读入null为文件结束
             while ((tempString = reader.readLine()) != null) {
             	line++;
-            	if (tempString.contains("--")) {//处理注释
+            	arrayList.add(tempString);
+            	/*if (tempString.contains("--")) {//处理注释
             		String[] real = tempString.split("--");
             		arrayList.add(real[0]);
 				}else {
-					arrayList.add(tempString);					
-				}
+				}*/
             }
             reader.close();
         } catch (IOException e) {
@@ -454,5 +460,104 @@ public class FileUtil {
 		}
 		bin.close();
 		return code;
+	}
+	
+	public static void order() throws Exception{
+		ArrayList<String> strings = readFileByLines("E:/WorkSpase/softEvolve/src/softEvolve/util/1/大明王朝第四章分词.json");
+		List<JSONObject> objects = new ArrayList<JSONObject>();
+		for (String s : strings) {
+			JSONObject object = JSONObject.parseObject(s);
+			Date date = object.getDate("createTime");
+			int index = 0;
+			for (JSONObject o : objects) {
+				if (o.getDate("createTime").before(date)) {
+					index++;
+				}else {
+					break;
+				}
+			}
+			objects.add(index,object);
+		}
+		//写入
+		for (JSONObject o : objects) {
+			System.out.println(o.getString("title"));
+			writeTxtFile(o.toJSONString(),"E:/WorkSpase/softEvolve/src/softEvolve/util/1/2.json");			
+		}		
+	}
+	
+	public static void findWords() throws Exception{
+		ArrayList<String> strings = readFileByLines("E:/WorkSpase/softEvolve/src/softEvolve/util/1/2.json");
+		List<String> wordsStrings = readFileByLines("E:/WorkSpase/softEvolve/src/softEvolve/util/1/words.json");
+		List<JSONObject> words = new ArrayList<JSONObject>();
+		for (String s : wordsStrings) {
+			words.add(JSONObject.parseObject(s));
+		}
+		for (String s : strings) {
+			JSONObject object = JSONObject.parseObject(s);
+			JSONArray items = object.getJSONArray("items");
+			for (Object item : items) {
+				String word = ((JSONObject)item).getString("word");
+				String tag = ((JSONObject)item).getString("postag");
+				boolean notFind = true;
+				for (JSONObject w : words) {
+					if (w.getString("word").equals(word)) {
+						notFind = false;
+						String[] postag = (String[])w.get("postag");
+						boolean notIn = true;
+						for (String t : postag) {
+							if (tag.equals(t)) {
+								notIn = false;
+								break;
+							}
+						}
+						if (notIn) {
+							String[] pList = new String[postag.length + 1];
+							int i = 0;
+							for (String string : postag) {
+								pList[i] = string;
+								i++;
+							}
+							pList[i] = tag;
+							w.put("postag", pList);
+						}
+						break;
+					}
+				}
+				if (notFind) {
+					JSONObject w = new JSONObject();
+					w.put("word", word);
+					String[] postag = {tag};
+					w.put("postag", postag);
+					w.put("_openid","ofeIo46tc1NX9UrKRVFcc-hgQ-UM");
+					w.put("updateTime", "2019-03-27 18:15:01");
+					w.put("createTime", "2019-03-27 18:15:01");
+					words.add(w);
+				}
+			}
+		}
+		for (JSONObject w : words) {
+			System.out.println(w);
+			writeTxtFile(w.toJSONString(),"E:/WorkSpase/softEvolve/src/softEvolve/util/1/words.json");			
+		}
+	}
+	
+	public static void main(String[] args) throws Exception {
+		List<String> wordsStrings = readFileByLines("E:/WorkSpase/softEvolve/src/softEvolve/util/1/words.json");
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		for (String s : wordsStrings) {
+			JSONObject w = JSONObject.parseObject(s);
+			JSONArray postag = (JSONArray)w.get("postag");
+			for(int i = 0;i< postag.size();i++){
+				String p = postag.getString(i);
+				if (map.containsKey(p)) {
+					map.put(p, map.get(p) + 1);
+				}else {
+					map.put(p, 1);
+				}
+			}
+		}
+		for (String string : map.keySet()) {
+			System.out.println(string + ":" + map.get(string));
+		}
 	}
 }
